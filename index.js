@@ -8,6 +8,7 @@ import React, {
   PropTypes,
   StyleSheet,
   View,
+  Text,
   Component,
 } from 'react-native';
 
@@ -18,7 +19,9 @@ export default class Tab extends Component {
 
   render () {
     return (
-      <View>tab</View>
+      <View>
+        <Text>tab</Text>
+      </View>
     )
   }
 }
