@@ -12,7 +12,7 @@ import React, {
 } from 'react-native';
 
 export default class Tab extends Component {
-  constructor (porps) {
+  constructor (props) {
     super(props);
   }
 
