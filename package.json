@@ -1,0 +1,22 @@
+{
+  "name": "react-native-tab-navigator-ios-android",
+  "version": "0.0.1",
+  "description": "react-native-tab-navigator-ios-android ",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mayacger/react-native-tab-navigator-ios-android.git"
+  },
+  "keywords": [
+    "react-native",
+    "tab-bar",
+    "navigator",
+    "ios",
+    "android"
+  ],
+  "author": "Mayacger",
+  "homepage": "https://github.com/mayacger/react-native-tab-navigator-ios-android",
+  "dependencies": {
+    "immutable": "^3.7.5"
+  }
+}
