@@ -17,6 +17,7 @@
   "author": "Mayacger",
   "homepage": "https://github.com/mayacger/react-native-tab-navigator-ios-android",
   "dependencies": {
-    "immutable": "^3.7.5"
+    "immutable": "^3.7.5",
+    "react-tween-state": "0.1.4"
   }
 }
