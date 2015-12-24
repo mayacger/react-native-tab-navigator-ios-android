@@ -46,11 +46,12 @@ export default class NavBarContainer extends Component {
   // We render both the current and the previous navbar (for animation)
   render () {
     return (
-      <View style={[styles.navbarContainer, this.props.style]}>
+      <View style={[styles.navbarContainer]}>
         <NavBarContent
           route={this.state.previousRoute}
           backButtonComponent={this.props.backButtonComponent}
           rightCorner={this.props.rightCorner}
+          headerStyle={this.props.style}
           titleStyle={this.props.titleStyle}
           willDisappear="true"
         />
@@ -58,6 +59,7 @@ export default class NavBarContainer extends Component {
           route={this.props.currentRoute}
           backButtonComponent={this.props.backButtonComponent}
           rightCorner={this.props.rightCorner}
+          headerStyle={this.props.style}
           titleStyle={this.props.titleStyle}
           goBack={this.goBack}
           goForward={this.goForward}
@@ -78,6 +80,6 @@ var styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 64,
-    backgroundColor: '#5589B7'
+    // backgroundColor: '#5589B7'
   }
 });

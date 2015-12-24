@@ -121,7 +121,7 @@ var NavBarContent = React.createClass({
 
 
     return (
-      <View style={[styles.navbar, this.props.route.headerStyle, transitionStyle]}>
+      <View style={[styles.navbar, this.props.headerStyle,this.props.route.headerStyle, transitionStyle]}>
         {leftCorner}
         {titleComponent}
         {rightCorner}
