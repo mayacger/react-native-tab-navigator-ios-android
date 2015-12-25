@@ -117,6 +117,7 @@ var NavBarContent = React.createClass({
       <View>
         {titleContent}
       </View>
+
     );
 
 
@@ -168,7 +169,8 @@ var styles = StyleSheet.create({
   },
   buttonTextRight: {
     marginRight: 10
-  }
+  },
+  
 });
 
 export default NavBarContent;

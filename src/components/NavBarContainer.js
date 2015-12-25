@@ -3,11 +3,13 @@
 import React, {
   StyleSheet,
   View,
+  Text,
   Component,
 } from 'react-native';
 
 
 import NavBarContent  from './NavBarContent';
+
 
 export default class NavBarContainer extends Component {
 
@@ -46,26 +48,27 @@ export default class NavBarContainer extends Component {
   // We render both the current and the previous navbar (for animation)
   render () {
     return (
-      <View style={[styles.navbarContainer]}>
-        <NavBarContent
-          route={this.state.previousRoute}
-          backButtonComponent={this.props.backButtonComponent}
-          rightCorner={this.props.rightCorner}
-          headerStyle={this.props.style}
-          titleStyle={this.props.titleStyle}
-          willDisappear="true"
-        />
-        <NavBarContent
-          route={this.props.currentRoute}
-          backButtonComponent={this.props.backButtonComponent}
-          rightCorner={this.props.rightCorner}
-          headerStyle={this.props.style}
-          titleStyle={this.props.titleStyle}
-          goBack={this.goBack}
-          goForward={this.goForward}
-          customAction={this.customAction}
-        />
-      </View>
+        <View style={[styles.navbarContainer]}>
+          <NavBarContent
+            route={this.state.previousRoute}
+            backButtonComponent={this.props.backButtonComponent}
+            rightCorner={this.props.rightCorner}
+            headerStyle={this.props.style}
+            titleStyle={this.props.titleStyle}
+            willDisappear="true"
+          />
+          <NavBarContent
+            route={this.props.currentRoute}
+            backButtonComponent={this.props.backButtonComponent}
+            rightCorner={this.props.rightCorner}
+            headerStyle={this.props.style}
+            titleStyle={this.props.titleStyle}
+            goBack={this.goBack}
+            goForward={this.goForward}
+            customAction={this.customAction}
+          />
+        </View>
+
     )
   }
 
@@ -74,6 +77,7 @@ export default class NavBarContainer extends Component {
 
 
 var styles = StyleSheet.create({
+
   navbarContainer: {
     position: 'absolute',
     top: 0,
