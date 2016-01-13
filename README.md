@@ -104,6 +104,10 @@ this.props.actions.pop();
 ```
 
 ## 参考示例
+https://github.com/mayacger/react-native-tab-navigator-ios-android-example
+
+
+<img src="https://github.com/mayacger/react-native-tab-navigator-ios-android-example/blob/master/src/images/eq.png?raw=true" alt="参考图" />
 
 ### ios
 
