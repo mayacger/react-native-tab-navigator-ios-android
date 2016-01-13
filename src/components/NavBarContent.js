@@ -101,7 +101,6 @@ var NavBarContent = React.createClass({
      * Set title message
      */
     var titleContent;
-
     if (this.props.route.titleComponent) {
       var TitleComponent = this.props.route.titleComponent;
       titleContent = <TitleComponent />;
@@ -170,7 +169,7 @@ var styles = StyleSheet.create({
   buttonTextRight: {
     marginRight: 10
   },
-  
+
 });
 
 export default NavBarContent;

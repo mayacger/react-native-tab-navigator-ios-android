@@ -20,11 +20,17 @@ import Tab from './src/components/Tab';
 import TabBar from './src/components/TabBar';
 import Badge from './src/components/Badge';
 
-export default class Nav extends Component {
+import * as actions from './src/actions';
+import reducer from './src/reducers';
+
+const actionTypes = actions.actionTypes;
+
+class Router extends Component {
 
 
   constructor (props) {
     super(props);
+    // const { actions = {}, dispatch } = props;
     this.state = {
       route: {
         name: null,
@@ -33,11 +39,15 @@ export default class Nav extends Component {
       dragStartX: null,
       didSwitchView: null,
     }
+
+    this.routes = {};
+
     this.onBack = this.onBack.bind(this);
     this.onForward = this.onForward.bind(this);
     this.customAction = this.customAction.bind(this);
     this.renderScene = this.renderScene.bind(this);
     this.onDidFocus = this.onDidFocus.bind(this);
+    // this._setNavigatorRef = this._setNavigatorRef.bind(this);
   }
 
   /*
@@ -49,28 +59,6 @@ export default class Nav extends Component {
   onDidFocus (route) {
     this.setState({ route: route });
   }
-
-
-  // _setNavigatorRef (navigator) {
-  //   if (navigator !== this._navigator) {
-  //     this._navigator = navigator;
-  //
-  //     if (navigator) {
-  //       var callback = (event) => {
-  //         this.setState({ route: route });
-  //       };
-  //       // Observe focus change events from the owner.
-  //       this._listeners = [
-  //         navigator.navigationContext.addListener('willfocus', callback),
-  //         navigator.navigationContext.addListener('didfocus', callback),
-  //       ];
-  //     }
-  //   }
-  // }
-  //
-  // componentWillUnmount () {
-  //   this._listeners && this._listeners.forEach(listener => listener.remove());
-  // }
 
   onBack (navigator) {
     if (this.state.route.index > 0) {
@@ -87,7 +75,68 @@ export default class Nav extends Component {
     this.props.customAction(opts);
   }
 
+  componentDidMount() {
+    this.props.actions.init({name: 'home'});
+  }
 
+  componentWillReceiveProps(nextProps) {
+
+    const routeKey = router => (
+      '' + router.activeTabBar + router.activeTab + router.currentRoute
+    );
+    // if (routeKey(this.props.router) !== routeKey(nextProps.router)) {
+      this.handleRouteChange(nextProps.router);
+    // }
+  }
+
+  handleRouteChange(router) {
+    const { data = {}, mode } = router;
+
+    if (mode === actionTypes.ROUTER_CHANGE_TAB) {
+      let routes = [];
+
+      if (router.routeStacks[router.activeTab]) {
+        routes = router.routeStacks[router.activeTab];
+        this.setState ({
+          route: routes[routes.length -1]
+        })
+      } else {
+
+        routes.push(router.popTo[router.activeTab]);
+          this.setState ({
+            route: router.popTo[router.activeTab]
+          })
+      }
+      this.refs.nav.immediatelyResetRouteStack(routes);
+    }
+
+    if (mode === actionTypes.ROUTER_POP) {
+      const num = data.num || 1;
+      const routes = this.refs.nav.getCurrentRoutes();
+      if (num < routes.length) {
+        this.refs.nav.popToRoute(routes[routes.length - 1 - num]);
+      } else {
+        this.refs.nav.popToTop();
+      }
+    }
+
+    if (mode === actionTypes.ROUTER_PUSH) {
+      let route = router.nav;
+      this.onForward(route, this.refs.nav);
+    }
+
+    if (mode === actionTypes.ROUTER_REPLACE) {
+      // this.refs.nav.replace(this.getRoute(
+      //   this.routes[router.currentRoute], router
+      // ));
+    }
+
+    if (mode === actionTypes.ROUTER_RESET) {
+      // this.refs.nav.immediatelyResetRouteStack([
+      //   this.getRoute(this.routes[router.currentRoute], router)
+      // ]);
+    }
+  }
 
   renderScene (route, navigator) {
 
@@ -166,7 +215,6 @@ export default class Nav extends Component {
   }
 
   render () {
-
     // Status bar color
     if (Platform.OS === 'ios') {
       if (this.props.statusBarColor === "black") {
@@ -180,6 +228,7 @@ export default class Nav extends Component {
     var navigationBar;
 
     if (!this.props.hideNavigationBar) {
+
       navigationBar =
       <NavBarContainer
         style={this.props.headerStyle}
@@ -197,8 +246,16 @@ export default class Nav extends Component {
 
     //toRoute in Tab
     let  _renderTab = function (item) {
+
+      // this.routes[item.props.title] = [];
+      // this.routes[item.props.title].push(item.props.changeRoute);
       let icon;
+
       if (item.props.selected) {
+        if (this.refs.nav) {
+          this.routes[item.props.title] = this.refs.nav.getCurrentRoutes();
+        }
+        this.routes.activeTab = item.props.title;
         if (item.props.renderSelectedIcon) {
           icon = item.props.renderSelectedIcon();
         } else if (item.props.renderIcon) {
@@ -217,8 +274,18 @@ export default class Nav extends Component {
       } else if (item.props.badgeText) {
         badge = <Badge>{item.props.badgeText}</Badge>;
       }
+
+      // this.props.actions.init({
+      //   // from: this.props.routes.activeTab,
+      //   name: item.props.title,
+      //   // tabBarName: this.props.title,
+      //   navigator: this.props.nav,
+      // });
       return (
         <Tab
+          {...this.props}
+          nav={this.refs.nav}
+          routes={this.routes}
           changeRoute={item.props.changeRoute}
           title={item.props.title}
           titleStyle={[
@@ -243,6 +310,7 @@ export default class Nav extends Component {
           initialRoute={this.props.firstRoute}
           navigationBar={navigationBar}
           renderScene={this.renderScene}
+          ref="nav"
           onDidFocus={this.onDidFocus}
         />
         <TabBar style={tabBarStyle} shadowStyle={tabBarShadowStyle}>
@@ -279,4 +347,11 @@ var styles = StyleSheet.create({
 
 });
 
-Nav.Tabitem = Tabitem;
+Router.Tabitem = Tabitem;
+
+
+module.exports =  {
+  actions,
+  Router,
+  reducer,
+};

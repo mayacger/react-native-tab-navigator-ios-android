@@ -25,7 +25,6 @@ export default class TabNavigatorItem extends React.Component {
 
   render() {
     let child = React.Children.only(this.props.children);
-    console.log(child);
     return React.cloneElement(child, {
       style: [child.props.style, this.props.style],
     });

@@ -10,6 +10,21 @@ import React, {
 
 import Layout from './Layout';
 
+
+const onSelect = props => el => {
+  props.actions.changeTab({
+    from: props.activeTab,
+    name: el.props.name,
+    navigator: props.navigator,
+  });
+
+
+
+  return {
+    selectionColor: props.tabStyles.tint || '#037AFF',
+  };
+};
+
 export default class Tab extends React.Component {
   static propTypes = {
     title: PropTypes.string,
@@ -26,14 +41,15 @@ export default class Tab extends React.Component {
   }
 
   render() {
-    let { title, badge } = this.props;
+    let { title, badge, selectedStyle, routes } = this.props;
+
     let icon = React.Children.only(this.props.children);
 
     if (title) {
       title =
         <Text
           numberOfLines={1}
-          style={[styles.title, this.props.titleStyle]}>
+          style={[styles.title, this.props.titleStyle, routes.activeTab ===  title ? selectedStyle : null ]}>
           {title}
         </Text>;
     }
@@ -59,15 +75,15 @@ export default class Tab extends React.Component {
     );
   }
 
+
   _handlePress(event) {
-    console.log(this.props)
-    let changeRoute = this.props.changeRoute;
-    // this.props.toRoute({
-    //   name: changeRoute.name,
-    //   component: changeRoute.component,
-    //   rightCorner: changeRoute.rightCorner,
-    //   titleComponent: changeRoute.titleComponent,
-    // })
+    this.props.actions.changeTab({
+      from: this.props.routes.activeTab,
+      name: this.props.title,
+      popTo: this.props.changeRoute,
+      // tabBarName: this.props.title,
+      navigator: this.props.nav,
+    });
     if (this.props.onPress) {
       this.props.onPress(event);
     }
